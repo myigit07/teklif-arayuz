@@ -278,7 +278,22 @@
   bindFmt('gecerli', fmtDate);
   bindFmt('tel', fmtPhone);
 
-  document.getElementById('printBtn').addEventListener('click', function(){ window.print(); });
+  var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent || '') || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  function showHint(){
+    if (document.getElementById('printHint')) return;
+    var h = document.createElement('div');
+    h.id = 'printHint';
+    h.className = 'no-print';
+    h.style.cssText = 'position:fixed;left:50%;top:20px;transform:translateX(-50%);max-width:340px;background:#1f3a5f;color:#fff;font-family:\'IBM Plex Sans\',sans-serif;font-size:13px;line-height:1.5;padding:14px 16px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,.3);z-index:100;text-align:center;';
+    h.innerHTML = 'iPhone Chrome sayfadan yazdırmayı desteklemez.<br><b>Çözüm:</b> sağ üstteki <b>⋮</b> menüsü → <b>Paylaş</b> → <b>Yazdır</b>.<br>(veya bu dosyayı <b>Safari</b> ile açın)<br><span style="display:inline-block;margin-top:10px;font-size:12px;text-decoration:underline;cursor:pointer;opacity:.85;">Kapat</span>';
+    h.querySelector('span').addEventListener('click', function(){ h.parentNode && h.parentNode.removeChild(h); });
+    document.body.appendChild(h);
+    setTimeout(function(){ if (h.parentNode) h.parentNode.removeChild(h); }, 8000);
+  }
+  document.getElementById('printBtn').addEventListener('click', function(){
+    if (isIOS) { showHint(); return; }
+    try { window.print(); } catch(e){ setTimeout(function(){ try { window.print(); } catch(_){ } }, 0); }
+  });
 
   recompute();
 })();
