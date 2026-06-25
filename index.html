@@ -27,15 +27,16 @@
   .lbl { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 10px; letter-spacing: .12em; color: #7a766e; text-transform: uppercase; font-weight: 600; padding: 0 6px; }
 
   @media print {
-    html, body { height: auto !important; background: #fff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    html, body { height: 100% !important; background: #fff !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
     .no-print { display: none !important; }
-    @page { size: A4 portrait; margin: 0; }
-    .screen-pad { padding: 0 !important; min-height: 0 !important; }
-    /* Fixed, mobile-safe page height: short enough that an iOS browser's own
-       URL / page-number band never pushes content onto a 2nd page, with the
-       contact block pinned to the bottom via .botwrap{margin-top:auto}. */
-    .page { width: 100% !important; min-height: 240mm !important; height: auto !important; box-shadow: none !important; page-break-inside: avoid !important; break-inside: avoid !important; page-break-after: avoid !important; }
-    .pad { padding: 12mm 14mm 10mm !important; }
+    @page { size: A4 portrait; margin: 10mm; }
+    /* height:100% makes the sheet equal to EXACTLY one printable page on every
+       device (even when a mobile browser reserves its own URL/page-number band),
+       so it can never spill to a 2nd page, and .botwrap{margin-top:auto} drops the
+       contact block onto the real bottom edge. */
+    .screen-pad { padding: 0 !important; min-height: 0 !important; height: 100% !important; }
+    .page { width: 100% !important; height: 100% !important; min-height: 0 !important; box-shadow: none !important; page-break-inside: avoid !important; break-inside: avoid !important; page-break-after: avoid !important; }
+    .pad { flex: 1 1 auto !important; padding: 4mm 6mm 2mm !important; }
     .botrow, .totbox, .info2 { page-break-inside: avoid !important; break-inside: avoid !important; }
   }
 
